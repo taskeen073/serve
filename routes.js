@@ -1,3 +1,4 @@
+// @ts-nocheck
 const { User } = require('./models')
 const mysql = require("mysql2/promise")
 const { Schedule } = require('./models')
@@ -5,9 +6,11 @@ const { Booking } = require('./models')
 const { Host } = require('./models')
 const { Customer } = require('./models')
 const { Comment } = require('./models')
-
+const UserControl = require('./controller/UserControl')
 module.exports = (app) => {
 
+    app.post('/login', UserControl.login)
+    
     app.post('/add', async(req, res) => {
             try {
                 let data = await User.create(req.body)
@@ -41,10 +44,9 @@ module.exports = (app) => {
         app.post('/geta', async(req, res) => {
             let data;
             let a;
-            let b = 3
             let s;
-            let z
-            let u
+            let z;
+            let u;
             let { ScheduleId } = req.body
             let c = { ScheduleId }
             console.log({ ScheduleId })
@@ -77,36 +79,7 @@ module.exports = (app) => {
         })
 
     ,
-    app.post("/regis/generate", async(req, res) => {
-            try {
-                let data = await User.create(req.body)
-                let { username, type, name, surname } = req.body
-
-                let c = { username, type, name, surname }
-                let f = await User.findOne({ where: { username: c.username } })
-
-
-                if (c.type == "Customer" || "customer") {
-                    let a = await Customer.create({
-                        c_name: c.name,
-                        c_surname: c.surname,
-                        UserId: f.id
-                    })
-                } else if (c.type == "Host" || "host") {
-                    let a = await Host.create({
-                        h_name: c.name,
-                        h_surname: c.surname,
-                        UserId: f.id
-                    })
-                }
-                console.log(data)
-                res.send("success")
-            } catch (e) {
-                console.log(e)
-                res.send("email is already")
-            }
-
-        }),
+    app.post("/register", UserControl.register),
         app.post("/dashboard", async(req, res) => {
             // let { ScheduleId } = req.body
             // let c = { ScheduleId }
