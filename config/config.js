@@ -9,7 +9,7 @@ module.exports = {
         options: {
             dialect: process.env.DIALECT || 'mysql',
             host: process.env.HOST || 'localhost',
-            port: 3307
+            port: 3306
         }
     }
 }
