@@ -17,9 +17,9 @@ module.exports = (sequelize, DataTypes) => {
             },
             time_date: DataTypes.DATE,
             s_sex: DataTypes.STRING,
-            s_religion: DataTypes.STRING,
             s_count: DataTypes.INTEGER,
             s_status: DataTypes.STRING,
+            s_detail: DataTypes.STRING,
         })
         Schedule.associate = function(models) {
             Schedule.belongsTo(models.User)

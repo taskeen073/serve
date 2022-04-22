@@ -1,4 +1,3 @@
-// @ts-nocheck
  const { Booking } = require('./models') 
  const { Customer } = require('./models') 
  const { Schedule } = require('./models') 

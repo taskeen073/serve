@@ -5,6 +5,8 @@ const { sequelize } = require('./models')
 const config = require('./config/config')
 // @ts-ignore
 const { User } = require('./models')
+const {Schedule} = require('./models')
+const {Booking} = require('./models')
 const app = express()
 app.use(bodyParser.json())
 app.use(cors())

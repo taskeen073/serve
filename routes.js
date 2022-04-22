@@ -3,14 +3,38 @@ const { User } = require('./models')
 const mysql = require("mysql2/promise")
 const { Schedule } = require('./models')
 const { Booking } = require('./models')
-const { Host } = require('./models')
-const { Customer } = require('./models')
 const { Comment } = require('./models')
 const UserControl = require('./controller/UserControl')
+const BookingControl = require('./controller/BookingControl')
+const ScheduleControl = require('./controller/ScheduleControl')
+
 module.exports = (app) => {
+
+
+    //BookingControl
+    app.get('/booking/getall', BookingControl.getallbook)
+    app.post('/call_schedule_by_user', BookingControl.call_schedule_by_user)
+    app.post('/booking/add', BookingControl.addbook)
+    app.get('call', BookingControl.getid)
+    //ScheduleControl
+    app.post('/getactive', ScheduleControl.getactive)
+    app.get('/schedule/getall', ScheduleControl.getallschedules)
+    app.get('/schedule/get/:id', ScheduleControl.getid)
+    app.post('/schedule/create', ScheduleControl.createschedule)
+    app.get('/schedule/update', ScheduleControl.updateschedule)
+
+
+    //UserControl
+    app.get('/user/get/:id', UserControl.getuserid)
 
     app.post('/login', UserControl.login)
     
+    app.get('/getUsername', UserControl.getUsername)
+
+    app.get('/gettype', UserControl.gettype)
+    app.post("/register", UserControl.register),
+
+
     app.post('/add', async(req, res) => {
             try {
                 let data = await User.create(req.body)
@@ -24,13 +48,12 @@ module.exports = (app) => {
             let data = await Booking.create(req.body)
             res.send(data)
 
-        }),
+        }
+        ),
         app.post('/gets', async(req, res) => {
             try {
                 let data = await Schedule.findAll({
                     where: {
-
-
                         s_status: 'active'
                     }
                 })
@@ -41,45 +64,43 @@ module.exports = (app) => {
 
 
         }),
-        app.post('/geta', async(req, res) => {
-            let data;
-            let a;
-            let s;
-            let z;
-            let u;
-            let { ScheduleId } = req.body
-            let c = { ScheduleId }
-            console.log({ ScheduleId })
-            let count = await Schedule.findOne({
-                attributes: ['s_count'],
-                where: { id: c.ScheduleId }
-            })
-            console.log(count.s_count > 0)
-            if (count.s_count > 0) {
-                a = count.s_count - 1
-                data = {
-                    zata: a
-                }
-                s = await Booking.create(req.body)
-                let { ScheduleId } = req.body
+        // app.post('/schedule/booking', async(req, res) => {
+        //     let data;
+        //     let a;
+        //     let s;
+        //     let u;
+        //     let { ScheduleId } = req.body
+        //     let c = { ScheduleId }
+        //     console.log({ ScheduleId })
+        //     let count = await Schedule.findOne({
+        //         attributes: ['s_count'],
+        //         where: { id: c.ScheduleId }
+        //     })
+        //     console.log(count.s_count > 0)
+        //     if (count.s_count > 0) {
+        //         a = count.s_count - 1
+        //         data = {
+        //             zata: a
+        //         }
+        //         s = await Booking.create(req.body)
+        //         let { ScheduleId } = req.body
 
-                u = await Schedule.update({
-                    s_count: a
-                }, { where: { id: c.ScheduleId } })
+        //         u = await Schedule.update({
+        //             s_count: a
+        //         }, { where: { id: c.ScheduleId } })
 
-            } else {
-                a = "error"
-                data = {
-                    zata: "error"
-                }
-            }
-            res.send(data)
-            console.log(s)
-            console.log(u)
-        })
+        //     } else {
+        //         a = "error"
+        //         data = {
+        //             zata: "error"
+        //         }
+        //     }
+        //     res.send(data)
+        //     console.log(s)
+        //     console.log(u)
+        // })
 
-    ,
-    app.post("/register", UserControl.register),
+    
         app.post("/dashboard", async(req, res) => {
             // let { ScheduleId } = req.body
             // let c = { ScheduleId }
